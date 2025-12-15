@@ -1,78 +1,80 @@
-# Andhis – Workflows Conversacionales
+# Andhis – Conversational Workflows
 
-Este directorio contiene los **workflows conversacionales en formato YAML**.
+This directory contains the **conversational workflows in YAML format**.
 
-Los workflows describen:
-- estados
-- transiciones
-- acciones
-- comportamiento esperado del sistema
+Workflows define:
+- states
+- transitions
+- allowed actions
+- expected system behavior
 
-Son la base para el motor de workflows del backend.
+They are the foundation of the backend workflow engine.
 
 ---
 
-## Convenciones
+## Conventions
 
-- Cada archivo corresponde a un `workflow_id`.
-- El nombre del archivo debe coincidir con el `workflow_id`.
-- Ejemplo:
+- Each file represents a single `workflow_id`.
+- The filename **must match** the `workflow_id`.
+- Example:
   - `onboarding_guide_ui.yaml` → `workflow_id: onboarding_guide_ui`
 
 ---
 
-## Workflows activos (MVP)
+## Active Workflows (MVP)
 
 ### `onboarding_guide_ui.yaml`
-- Onboarding guiado con avatar neutro.
-- Interacción por botones (no chat libre).
-- Permite:
-  - explicar la app
-  - elegir uso principal
-  - elegir estilo de avatar
 
-👉 Usado en producción (MVP).
+- Guided onboarding using a neutral system avatar.
+- Button-based interaction (not free chat).
+- Allows the system to:
+  - explain the app,
+  - determine main user intent,
+  - select avatar style.
+
+👉 **Used in MVP onboarding.**
 
 ---
 
-## Workflows base / legacy
+## Base / Legacy Workflows
 
 ### `onboarding_basic.yaml`
-- Workflow genérico de onboarding.
-- Usado como referencia técnica o legacy.
-- No representa la UX final del producto.
 
-👉 No se usa directamente en el MVP.
+- Generic onboarding workflow.
+- Kept as technical reference or legacy flow.
+- Does **not** represent final product UX.
+
+👉 Not used directly in the MVP UI.
 
 ---
 
-## Workflows planned (no implementados aún)
+## Planned Workflows (Not Implemented Yet)
 
-Estos workflows están referenciados en `product/agents.yaml`,
-pero aún no existen como YAML ejecutables:
+The following workflows are referenced by agents
+but do not yet exist as executable YAML:
 
 - `chat_companion_v1`
 - `chat_info_v1`
 
-👉 Se implementarán en la siguiente fase (chat con IA).
+👉 Planned for the next phase (free chat with AI).
 
 ---
 
-## Relación con otros documentos
+## Relation to Other Documents
 
-- Diseño funcional del onboarding:
-  - `docs/ai/product/onboarding_flow.md`
-- Contrato frontend ↔ backend:
-  - `docs/ai/product/onboarding_contract.md`
-- Tests:
-  - `docs/ai/tests/`
+- Onboarding functional design:
+  - `ai/product/onboarding_flow.md`
+- Frontend ↔ Backend contract:
+  - `ai/product/onboarding_contract.md`
+- Tests and acceptance criteria:
+  - `ai/tests/`
 
 ---
 
-## Estado
+## Status
 
-- Directorio preparado para crecimiento.
-- Nuevos workflows deben añadirse aquí siguiendo la convención.
+- Directory ready for growth.
+- New workflows must follow the established conventions.
 
-Responsable Diseño de workflows:
+Workflow design owner:
 - Whiteks L.P.R

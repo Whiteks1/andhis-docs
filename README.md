@@ -1,115 +1,100 @@
 # Andhis – AI Documentation
 
-Este repositorio contiene la **documentación de diseño conversacional e IA**
-del proyecto **Andhis**.
+This repository contains the **authoritative documentation**
+for the conversational AI domain of Andhis.
 
-Aquí se define **qué hace la IA, cómo se comporta y cómo debe integrarse**,
-antes de cualquier implementación técnica.
+The `ai/` directory is the **single source of truth (SSOT)** for:
+- AI behavior and limits
+- conversational workflows
+- onboarding logic
+- API contracts related to AI interactions
 
----
-
-## Alcance del repositorio
-
-Este repositorio cubre exclusivamente:
-
-- Definición de agentes (avatares) de IA
-- Diseño de workflows conversacionales (YAML)
-- Contratos de API relacionados con IA (onboarding, chat)
-- Políticas globales y límites de comportamiento
-- Tests funcionales de workflows
+This repository is intentionally **decoupled from application code**.
+Its purpose is to define design, contracts, and behavior — not implementation.
 
 ---
 
-## Qué es este repositorio
+## Source of Truth (TL;DR)
 
-- Fuente de verdad del **diseño conversacional**
-- Referencia compartida entre **producto, UX y backend**
-- Documentación versionada y revisable
-- Base para implementación determinista de IA
+Design documentation and contracts for the AI layer.
+Below is a concise map of **which file is authoritative** for each part of the system.
 
----
+### Agents
+- **Implementation (YAML – technical source of truth):**  
+  `ai/agents/agents_registry.yaml`
+- **Product / UX (human documentation):**  
+  `ai/product/agents_mvp.md`
 
-## Qué NO es este repositorio
+### Onboarding
+- **API Contract (backend ↔ frontend):**  
+  `ai/api/CONTRACT_onboarding_action.md`
+- **Executable workflow:**  
+  `ai/workflows/onboarding_basic.yaml`
+- **Tests / acceptance criteria:**  
+  `ai/tests/onboarding_basic.md`
 
-- No contiene código backend
-- No contiene código frontend
-- No define lógica de infraestructura ni runtime
-- No ejecuta workflows
-
----
-
-## Nota sobre la estructura del repositorio
-
-Este repositorio está dedicado exclusivamente a la documentación de IA de Andhis.
-
-Por ese motivo, la estructura comienza directamente en `ai/`, en lugar de
-`docs/ai/` como ocurre en el repositorio principal de la aplicación.
-
-Conceptualmente, `ai/` en este repositorio equivale a `docs/ai/`
-en el monorepo principal.  
-La documentación y su organización son las mismas; únicamente cambia
-el punto de entrada.
+### Important notes
+- Backend **must only consume** YAML files explicitly marked as technical sources of truth.
+- Documents in `product/` describe **intent, UX, and business decisions**, not executable logic.
+- Any change to workflows or contracts must be reflected in their corresponding tests.
 
 ---
 
-## Estructura de carpetas
+## Why `ai/` is the root directory
+
+This repository focuses exclusively on the AI domain.
+
+For this reason, the `ai/` folder is the semantic root of the project,
+not a subfolder of `docs/`.
+
+The application codebase may reference or mirror this structure,
+but this repository remains the **design and contract authority**
+for the AI system.
+
+---
+
+## Scope
+
+This repository covers:
+
+- AI agents (product definition and technical registry)
+- Conversational workflows (YAML state machines)
+- Frontend ↔ Backend API contracts related to AI
+- Functional workflow tests and acceptance criteria
+- Global AI policies, limits, and safety rules
+
+---
+
+## Non-Goals
+
+This repository does **not** include:
+
+- Backend implementation
+- Frontend implementation
+- Runtime prompt configuration
+- Infrastructure or deployment concerns
+
+---
+
+## Directory Structure
 
 ai/
-├─ base/ # Políticas globales de IA (límites, estilo, seguridad)
-├─ product/ # Decisiones de producto y UX relacionadas con IA
-├─ agents/ # Definición de agentes (técnica y documentación humana)
-├─ workflows/ # Workflows conversacionales en YAML
-├─ tests/ # Tests funcionales de workflows
-└─ api/ # Contratos de API relacionados con IA
+├─ agents/ # Agent registry, mappings, and agent-related documentation
+├─ base/ # Global AI policies and defaults
+├─ product/ # Product and UX documentation
+├─ workflows/ # Executable conversational workflows (YAML)
+├─ api/ # AI-related API contracts
+└─ tests/ # Workflow tests and acceptance criteria
 
 
----
-
-## Fuentes de verdad (importante)
-
-Cada tipo de información tiene **una única fuente de verdad**:
-
-- Comportamiento global de la IA → `ai/base/`
-- Agentes (definición técnica) → `ai/agents/agents_registry.yaml`
-- Agentes (producto y UX) → `ai/agents/agents_mvp.md`
-- Mapeo onboarding → `ai/agents/agents_mapping.yaml`
-- Workflows conversacionales → `ai/workflows/`
-- Tests de comportamiento → `ai/tests/`
-- Contratos de API → `ai/api/`
-
-No se deben duplicar decisiones entre archivos.
 
 ---
 
-## Estado del proyecto
+## AI Domain & Status
 
-- Onboarding: **diseñado y documentado**
-- Agentes IA: **definidos a nivel de producto**
-- Motor de workflows: **pendiente de implementación**
-- Chat IA completo: **planned**
+This directory contains the complete definition of Andhis AI behavior.
 
-La documentación está en **iteración activa**.
+Everything in `ai/` is considered **design- and contract-level truth**.
+All implementations must conform to these documents.
 
----
-
-## Reglas de edición
-
-- Cambios estructurales deben revisarse antes de implementarse.
-- Cambios de copy o tono pueden iterarse libremente.
-- IDs, slugs y nombres técnicos no se cambian sin coordinación.
-- Todo cambio debe preservar coherencia entre:
-  - workflows
-  - contratos
-  - tests
-
----
-
-## Rol y responsabilidad
-
-- Diseño conversacional y documentación IA: **Whiteks**
-- Implementación técnica: **equipo de desarrollo**
-
-Este repositorio existe para que diseño y backend avancen
-**alineados y sin ambigüedades**.
-
----
+**Status:** Active – under iterative design.

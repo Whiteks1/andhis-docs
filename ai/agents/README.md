@@ -1,74 +1,82 @@
-# Andhis – Agentes IA
+# Andhis – AI Agents
 
-Este directorio contiene la definición y documentación de los agentes
-(avatars) de IA del sistema Andhis.
+This directory contains the complete definition and documentation
+of the AI agents (avatars) used in the Andhis system.
 
-Aquí se separan claramente:
-- la **configuración técnica** consumible por el sistema,
-- la **documentación de producto / UX**,
-- y los **mapeos funcionales** usados durante el onboarding.
+It clearly separates:
+- **technical configuration** consumed by the system,
+- **product / UX documentation**,
+- and **functional mappings** used during onboarding.
 
 ---
 
-## Archivos principales
+## Single Source of Truth
 
 ### `agents_registry.yaml`
-**Estado:** PREPARADO (draft, no consumido por código)
+**Status:** PREPARED (draft, not consumed by code yet)
 
-Registro técnico unificado de todos los agentes del sistema.
+This file is the **single source of truth (SSOT)** for AI agent definitions.
 
-- Define qué agentes existen.
-- Establece su tipo (system / selectable).
-- Indica el workflow por defecto y ajustes técnicos.
-- Está pensado para ser la **fuente de verdad técnica** cuando se implemente.
+- Defines which agents exist.
+- Specifies their type (`system` / `selectable`).
+- Declares default workflows and technical settings.
+- Intended to be consumed by backend and frontend when implemented.
 
-> ⚠️ Actualmente este archivo **NO es leído por el backend**.
+> ⚠️ Currently, this file is **not yet consumed by backend code**.
+
+No other YAML file defines implementable agents.
 
 ---
+
+## Product / UX Documentation
 
 ### `agents_mvp.md`
-Documento humano de producto y UX.
 
-- Describe el tono, promesa y límites de cada avatar.
-- Sirve como referencia para diseño, tests y prompts.
-- No es consumido por el sistema.
+Human-readable product and UX documentation.
+
+- Describes tone, promise, and limits of each avatar.
+- Used as reference for design, tests, and prompt engineering.
+- **Not consumed by the system.**
 
 ---
+
+## Onboarding Mapping
 
 ### `agents_mapping.yaml`
-Mapa funcional usado durante el onboarding.
 
-- Relaciona el `style_code` elegido por el usuario (1–5)
-  con el agente real (`id` / `slug`).
-- Usado por backend durante el onboarding.
+Functional mapping used during onboarding.
 
----
-
-## Relación con otros directorios
-
-- Políticas globales de IA: `docs/ai/base/policies.md`
-- Workflows YAML: `docs/ai/workflows/`
-- Tests de workflows: `docs/ai/tests/`
+- Maps the user-selected `style_code` (1–5)
+  to the actual agent (`id` / `slug`).
+- Used by backend logic during onboarding.
 
 ---
 
-## Reglas de edición (importante)
+## Relation to Other Directories
 
-Mientras `agents_registry.yaml` esté en estado *draft*:
-
-- Cambios **técnicos** → `agents_registry.yaml`
-- Cambios de **producto / UX** → `agents_mvp.md`
-- Cambios de **onboarding** → `agents_mapping.yaml`
-- Cambios de **seguridad y límites globales** → `policies.md`
+- Global AI policies: `ai/base/policies.md`
+- Conversational workflows: `ai/workflows/`
+- Workflow tests: `ai/tests/`
 
 ---
 
-## Nota final
+## Editing Rules (Important)
 
-Este diseño está preparado para escalar:
-- nuevos agentes,
-- variantes por estilo,
-- consumo dinámico desde backend,
-- evolución del chat con IA.
+While `agents_registry.yaml` is in *draft* status:
 
-Cualquier cambio estructural debe discutirse antes de implementarse.
+- **Technical agent changes** → `agents_registry.yaml`
+- **Product / UX changes** → `agents_mvp.md`
+- **Onboarding selection logic** → `agents_mapping.yaml`
+- **Global safety and limits** → `policies.md`
+
+---
+
+## Final Note
+
+This design is prepared to scale:
+- new agents,
+- multiple styles,
+- dynamic backend consumption,
+- future chat-based workflows.
+
+Any structural change must be discussed before implementation.

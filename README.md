@@ -1,10 +1,10 @@
-Andhis – AI Documentation
+##Andhis – AI Documentation
 
 Este repositorio contiene la documentación de diseño conversacional e IA del proyecto Andhis.
 
 Aquí se define qué hace la IA, cómo se comporta y cómo debe integrarse, antes de cualquier implementación técnica.
 
-Alcance del repositorio
+##Alcance del repositorio
 
 Este repositorio cubre exclusivamente:
 
@@ -18,7 +18,7 @@ Políticas globales y límites de comportamiento
 
 Tests funcionales de workflows
 
-Qué es este repositorio
+##Qué es este repositorio
 
 Fuente de verdad del diseño conversacional
 
@@ -28,7 +28,7 @@ Documentación versionada y revisable
 
 Base para implementación determinista de IA
 
-Qué NO es este repositorio
+###Qué NO es este repositorio
 
 No contiene código backend
 
@@ -47,7 +47,7 @@ Por ese motivo, la estructura comienza directamente en ai/, en lugar de docs/ai/
 Conceptualmente, ai/ en este repositorio equivale a docs/ai/ en el monorepo principal.
 La documentación y su organización son las mismas; únicamente cambia el punto de entrada.
 
-Estructura de carpetas
+##Estructura de carpetas
 
 ai/
 ├─ base/ — Políticas globales de IA (límites, estilo, seguridad)
@@ -57,7 +57,7 @@ ai/
 ├─ tests/ — Tests funcionales de workflows
 └─ api/ — Contratos de API relacionados con IA
 
-Fuentes de verdad (importante)
+##Fuentes de verdad (importante)
 
 Cada tipo de información tiene una única fuente de verdad:
 
@@ -77,7 +77,7 @@ Contratos de API → ai/api/
 
 No se deben duplicar decisiones entre archivos.
 
-Estado del proyecto
+##Estado del proyecto
 
 Onboarding: diseñado y documentado
 
@@ -89,7 +89,7 @@ Chat IA completo: planned
 
 La documentación está en iteración activa.
 
-Reglas de edición
+###Reglas de edición
 
 Cambios estructurales deben revisarse antes de implementarse.
 

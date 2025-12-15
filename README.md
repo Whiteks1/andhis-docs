@@ -3,39 +3,41 @@
 This repository contains the **authoritative documentation**
 for the conversational AI system of Andhis.
 
-The `ai/` directory is the **root of truth** for:
+The `ai/` directory is the **single source of truth (SSOT)** for:
 - AI behavior
 - conversational workflows
 - onboarding logic
-- and API contracts related to AI interactions
+- API contracts related to AI interactions
 
 This repository is intentionally **decoupled from application code**.
 
 ---
 
 ## Source of Truth (TL;DR)
-ocumentación de diseño y contratos de la capa de IA.
-A continuación se indica **qué archivo es la fuente de verdad** para cada parte del sistema.
 
-### Agentes
-- **Implementación (YAML – fuente de verdad técnica):**  
+Design documentation and contracts for the AI layer.
+Below is a concise map of **which file is authoritative** for each part of the system.
+
+### Agents
+- **Implementation (YAML – technical source of truth):**  
   `ai/agents/agents_registry.yaml`
-- **Producto / UX (documentación humana):**  
+- **Product / UX (human documentation):**  
   `ai/product/agents_mvp.md`
 
 ### Onboarding
-- **Contrato API (backend ↔ frontend):**  
+- **API Contract (backend ↔ frontend):**  
   `ai/api/CONTRACT_onboarding_action.md`
-- **Workflow ejecutable:**  
+- **Executable workflow:**  
   `ai/workflows/onboarding_basic.yaml`
-- **Casos de prueba / criterios de aceptación:**  
+- **Tests / acceptance criteria:**  
   `ai/tests/onboarding_basic.md`
 
-### Notas importantes
-- El backend **solo debe consumir** los YAML marcados como fuente de verdad técnica.
-- Los documentos en `product/` describen **intención, UX y decisiones de negocio**, no lógica ejecutable.
-- Cualquier cambio en workflows o contratos debe reflejarse también en sus tests asociados.
+### Important notes
+- The backend **must only consume** YAML files explicitly marked as technical sources of truth.
+- Documents in `product/` describe **intent, UX, and business decisions**, not executable logic.
+- Any change to workflows or contracts must be reflected in their corresponding tests.
 
+---
 
 ## Why `ai/` is the root directory
 
@@ -43,7 +45,7 @@ This repository focuses exclusively on the AI domain.
 For this reason, the `ai/` folder is the semantic root, not a subfolder of `docs/`.
 
 The application codebase may reference or mirror this structure,
-but this repository remains the **source of truth** for design and contracts.
+but this repository remains the **source of truth** for AI design and contracts.
 
 ---
 
@@ -51,8 +53,8 @@ but this repository remains the **source of truth** for design and contracts.
 
 - AI agents (product definition and technical registry)
 - Conversational workflows (YAML state machines)
-- Frontend ↔ Backend API contracts
-- Functional workflow tests
+- Frontend ↔ Backend API contracts related to AI
+- Functional workflow tests and acceptance criteria
 - Global AI policies and limits
 
 ---
@@ -61,11 +63,11 @@ but this repository remains the **source of truth** for design and contracts.
 
 - Backend implementation
 - Frontend implementation
-- Prompt runtime configuration
+- Runtime prompt configuration
 
 ---
 
-## Directory structure
+## Directory Structure
 
 ai/
 ├─ base/
@@ -77,13 +79,11 @@ ai/
 
 ---
 
-## Status
-
-Active – under iterative design.
-
-# AI Domain
+## AI Domain & Status
 
 This directory contains the complete definition of Andhis AI behavior.
 
-Everything here is considered **design- and contract-level truth**.
-Implementation must conform to these documents.
+Everything in `ai/` is considered **design- and contract-level truth**.
+All implementations must conform to these documents.
+
+**Status:** Active – under iterative design.

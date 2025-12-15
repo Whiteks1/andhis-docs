@@ -1,100 +1,82 @@
-# Andhis – AI Documentation
+# Andhis – AI Agents
 
-This repository contains the **authoritative documentation**
-for the conversational AI domain of Andhis.
+This directory contains the complete definition and documentation
+of the AI agents (avatars) used in the Andhis system.
 
-The `ai/` directory is the **single source of truth (SSOT)** for:
-- AI behavior and limits
-- conversational workflows
-- onboarding logic
-- API contracts related to AI interactions
-
-This repository is intentionally **decoupled from application code**.
-Its purpose is to define design, contracts, and behavior — not implementation.
+It clearly separates:
+- **technical configuration** consumed by the system,
+- **product / UX documentation**,
+- and **functional mappings** used during onboarding.
 
 ---
 
-## Source of Truth (TL;DR)
+## Single Source of Truth
 
-Design documentation and contracts for the AI layer.
-Below is a concise map of **which file is authoritative** for each part of the system.
+### `agents_registry.yaml`
+**Status:** PREPARED (draft, not consumed by code yet)
 
-### Agents
-- **Implementation (YAML – technical source of truth):**  
-  `ai/agents/agents_registry.yaml`
-- **Product / UX (human documentation):**  
-  `ai/product/agents_mvp.md`
+This file is the **single source of truth (SSOT)** for AI agent definitions.
 
-### Onboarding
-- **API Contract (backend ↔ frontend):**  
-  `ai/api/CONTRACT_onboarding_action.md`
-- **Executable workflow:**  
-  `ai/workflows/onboarding_basic.yaml`
-- **Tests / acceptance criteria:**  
-  `ai/tests/onboarding_basic.md`
+- Defines which agents exist.
+- Specifies their type (`system` / `selectable`).
+- Declares default workflows and technical settings.
+- Intended to be consumed by backend and frontend when implemented.
 
-### Important notes
-- Backend **must only consume** YAML files explicitly marked as technical sources of truth.
-- Documents in `product/` describe **intent, UX, and business decisions**, not executable logic.
-- Any change to workflows or contracts must be reflected in their corresponding tests.
+> ⚠️ Currently, this file is **not yet consumed by backend code**.
+
+No other YAML file defines implementable agents.
 
 ---
 
-## Why `ai/` is the root directory
+## Product / UX Documentation
 
-This repository focuses exclusively on the AI domain.
+### `agents_mvp.md`
 
-For this reason, the `ai/` folder is the semantic root of the project,
-not a subfolder of `docs/`.
+Human-readable product and UX documentation.
 
-The application codebase may reference or mirror this structure,
-but this repository remains the **design and contract authority**
-for the AI system.
-
----
-
-## Scope
-
-This repository covers:
-
-- AI agents (product definition and technical registry)
-- Conversational workflows (YAML state machines)
-- Frontend ↔ Backend API contracts related to AI
-- Functional workflow tests and acceptance criteria
-- Global AI policies, limits, and safety rules
+- Describes tone, promise, and limits of each avatar.
+- Used as reference for design, tests, and prompt engineering.
+- **Not consumed by the system.**
 
 ---
 
-## Non-Goals
+## Onboarding Mapping
 
-This repository does **not** include:
+### `agents_mapping.yaml`
 
-- Backend implementation
-- Frontend implementation
-- Runtime prompt configuration
-- Infrastructure or deployment concerns
+Functional mapping used during onboarding.
 
----
-
-## Directory Structure
-
-ai/
-├─ agents/ # Agent registry, mappings, and agent-related documentation
-├─ base/ # Global AI policies and defaults
-├─ product/ # Product and UX documentation
-├─ workflows/ # Executable conversational workflows (YAML)
-├─ api/ # AI-related API contracts
-└─ tests/ # Workflow tests and acceptance criteria
-
+- Maps the user-selected `style_code` (1–5)
+  to the actual agent (`id` / `slug`).
+- Used by backend logic during onboarding.
 
 ---
 
-## AI Domain & Status
+## Relation to Other Directories
 
-This directory contains the complete definition of Andhis AI behavior.
+- Global AI policies: `ai/base/policies.md`
+- Conversational workflows: `ai/workflows/`
+- Workflow tests: `ai/tests/`
 
-Everything in `ai/` is considered **design- and contract-level truth**.
-All implementations must conform to these documents.
+---
 
-**Status:** Active – under iterative design.
+## Editing Rules (Important)
 
+While `agents_registry.yaml` is in *draft* status:
+
+- **Technical agent changes** → `agents_registry.yaml`
+- **Product / UX changes** → `agents_mvp.md`
+- **Onboarding selection logic** → `agents_mapping.yaml`
+- **Global safety and limits** → `policies.md`
+
+---
+
+## Final Note
+
+This design is prepared to scale:
+- new agents,
+- multiple styles,
+- dynamic backend consumption,
+- future chat-based workflows.
+
+Any structural change must be discussed before implementation.

@@ -1,15 +1,16 @@
 # Andhis – AI Documentation
 
 This repository contains the **authoritative documentation**
-for the conversational AI system of Andhis.
+for the conversational AI domain of Andhis.
 
 The `ai/` directory is the **single source of truth (SSOT)** for:
-- AI behavior
+- AI behavior and limits
 - conversational workflows
 - onboarding logic
 - API contracts related to AI interactions
 
 This repository is intentionally **decoupled from application code**.
+Its purpose is to define design, contracts, and behavior — not implementation.
 
 ---
 
@@ -33,7 +34,7 @@ Below is a concise map of **which file is authoritative** for each part of the s
   `ai/tests/onboarding_basic.md`
 
 ### Important notes
-- The backend **must only consume** YAML files explicitly marked as technical sources of truth.
+- Backend **must only consume** YAML files explicitly marked as technical sources of truth.
 - Documents in `product/` describe **intent, UX, and business decisions**, not executable logic.
 - Any change to workflows or contracts must be reflected in their corresponding tests.
 
@@ -42,39 +43,49 @@ Below is a concise map of **which file is authoritative** for each part of the s
 ## Why `ai/` is the root directory
 
 This repository focuses exclusively on the AI domain.
-For this reason, the `ai/` folder is the semantic root, not a subfolder of `docs/`.
+
+For this reason, the `ai/` folder is the semantic root of the project,
+not a subfolder of `docs/`.
 
 The application codebase may reference or mirror this structure,
-but this repository remains the **source of truth** for AI design and contracts.
+but this repository remains the **design and contract authority**
+for the AI system.
 
 ---
 
 ## Scope
 
+This repository covers:
+
 - AI agents (product definition and technical registry)
 - Conversational workflows (YAML state machines)
 - Frontend ↔ Backend API contracts related to AI
 - Functional workflow tests and acceptance criteria
-- Global AI policies and limits
+- Global AI policies, limits, and safety rules
 
 ---
 
 ## Non-Goals
 
+This repository does **not** include:
+
 - Backend implementation
 - Frontend implementation
 - Runtime prompt configuration
+- Infrastructure or deployment concerns
 
 ---
 
 ## Directory Structure
 
 ai/
-├─ base/
-├─ product/
-├─ workflows/
-├─ api/
-└─ tests/
+├─ agents/ # Agent registry, mappings, and agent-related documentation
+├─ base/ # Global AI policies and defaults
+├─ product/ # Product and UX documentation
+├─ workflows/ # Executable conversational workflows (YAML)
+├─ api/ # AI-related API contracts
+└─ tests/ # Workflow tests and acceptance criteria
+
 
 
 ---

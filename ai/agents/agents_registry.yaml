@@ -1,20 +1,31 @@
 # =====================================================
-# ANDHIS – AGENTS REGISTRY (DRAFT)
+# AGENTS REGISTRY — SINGLE SOURCE OF TRUTH (YAML)
 # =====================================================
+#
 # Estado: PREPARADO (NO CONSUMIDO POR CÓDIGO AÚN)
-# Objetivo: Dejar una FUENTE DE VERDAD TÉCNICA lista para implementación.
+#
+# Objetivo:
+# Este archivo es la FUENTE DE VERDAD TÉCNICA ÚNICA para
+# la definición de agentes del sistema Andhis.
 #
 # Cuando el backend lo consuma:
 # - Backend leerá ESTE archivo como catálogo único de agentes.
-# - Frontend podrá usarlo para render UI de selección / etiquetas.
+# - Frontend podrá usarlo para renderizar UI de selección,
+#   etiquetas, nombres y estilos.
+#
+# IMPORTANTE:
+# - Ningún otro archivo YAML define agentes implementables.
+# - Los documentos en /product son SOLO documentación humana.
 #
 # Documentos relacionados:
-# - docs/ai/agents/agents_mvp.md     (documentación humana / UX)
-# - docs/ai/base/policies.md        (políticas globales transversales)
-# - docs/ai/agents/agents_mapping.yaml (mapeo onboarding style_code → agent)
+# - docs/ai/product/agents_mvp.md          → Documentación humana / UX
+# - docs/ai/base/policies.md               → Políticas globales transversales
+# - docs/ai/agents/agents_mapping.yaml     → Mapeo onboarding style_code → agent
+#
 # =====================================================
 
-version: "1.0"
+schema_version: "1.0"
+catalog_version: "2025-12-15"
 status: "draft_not_consumed"
 
 structure:
@@ -26,12 +37,18 @@ structure:
     - is_selectable
     - default_workflow_id
     - settings
+  optional_fields:
+    - description
+    - style_code
+    - tone_tags
+    - limits
+    - metadata
 
 agents:
 
-  # ----------------------------
-  # SYSTEM AGENTS (no seleccionables)
-  # ----------------------------
+  # ==================================================
+  # SYSTEM AGENTS (no seleccionables por el usuario)
+  # ==================================================
 
   - id: "andhis_default"
     slug: "andhis_default"
@@ -53,6 +70,8 @@ agents:
         - "Guiar al usuario a través de workflows disponibles."
         - "Respuestas claras, accionables y realistas."
       safety_profile: "general_system"
+      notes:
+        - "TEMP: default_workflow_id apunta a onboarding hasta que exista routing por onboarding_completed."
 
   - id: "guide_neutral"
     slug: "guide_neutral"
@@ -68,9 +87,9 @@ agents:
     settings:
       temperature: 0.3
 
-  # ----------------------------
-  # SELECTABLE AGENTS (avatares)
-  # ----------------------------
+  # ==================================================
+  # SELECTABLE AGENTS (avatares seleccionables)
+  # ==================================================
 
   - id: "calm_companion"
     slug: "calm_companion"
@@ -105,7 +124,7 @@ agents:
   - id: "coach_motivator"
     slug: "coach_motivator"
     name: "Kira"
-    description: "Motivador/coach."
+    description: "Motivador / coach."
     type: "selectable"
     is_selectable: true
     style_code: "3"
@@ -135,7 +154,7 @@ agents:
   - id: "info_neutral"
     slug: "info_neutral"
     name: "Atlas"
-    description: "Informativo/neutral."
+    description: "Informativo / neutral."
     type: "selectable"
     is_selectable: true
     style_code: "5"

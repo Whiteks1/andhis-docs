@@ -1,0 +1,197 @@
+# =========================================================
+# WORKFLOW DE DISEÑO – ONBOARDING AVATAR GUÍA (UI)
+# =========================================================
+# Estado: aprobado funcionalmente
+# Responsable: Whiteks L.P.R
+# Uso: Avatar guía neutro tras login (primer acceso)
+#
+# NOTA IMPORTANTE:
+# - Este workflow NO es ejecutable todavía.
+# - Define intención, estructura de UI y decisiones de producto.
+# - NO define prompts exactos ni lógica interna de IA.
+#
+# STATUS: Design approved
+# IMPLEMENTATION: Pending
+
+
+id: "onboarding_guide_ui"
+name: "Onboarding con Avatar Guía (UI)"
+description: >
+  Guía neutral que explica brevemente la app y permite
+  configurar el avatar principal del usuario mediante UI guiada.
+
+
+# Contexto persistente durante el onboarding
+
+context_schema:
+  main_use:
+    type: "string"
+    allowed: ["A", "B", "C"]
+    description: >
+      Uso principal elegido por el usuario:
+      A = Chat con avatar IA
+      B = Red social (posts)
+      C = Ambos
+  preferred_style:
+    type: "string"
+    allowed: ["1", "2", "3", "4", "5"]
+    description: Estilo de personalidad preferido para el avatar
+  selected_agent_id:
+    type: "string"
+    description: ID del avatar finalmente asignado al usuario
+
+
+# Estados del workflow
+
+states:
+
+  # -------------------------
+  # 1. Bienvenida
+  # -------------------------
+  - id: "welcome"
+    type: "message"
+    on_enter:
+      kind: "static_message"
+      params:
+        text: >
+          Hola, soy tu guía dentro de Andhis.
+          En menos de un minuto te explico cómo funciona
+          y eliges el avatar que te acompañará.
+    transitions:
+      - condition: "always"
+        target: "explain_app"
+
+  # -------------------------
+  # 2. Explicación breve del producto
+  # -------------------------
+  - id: "explain_app"
+    type: "message"
+    on_enter:
+      kind: "static_message"
+      params:
+        text: >
+          Andhis es una red social donde puedes publicar y leer posts,
+          y además conversar con avatares de IA con distintas personalidades.
+          Tú decides cómo quieres usarla.
+    transitions:
+      - condition: "always"
+        target: "choose_main_use"
+
+  # -------------------------
+  # 3. Elección de uso principal
+  # -------------------------
+  - id: "choose_main_use"
+    type: "ui"
+    on_enter:
+      kind: "ui_choices"
+      params:
+        text: "¿Qué te apetece usar principalmente ahora mismo?"
+        action: "choose_main_use"
+        choices:
+          - value: "A"
+            label: "Hablar con un avatar IA"
+          - value: "B"
+            label: "Publicar y leer posts"
+          - value: "C"
+            label: "Ambas cosas"
+    transitions:
+      - condition: "ui_action_in('choose_main_use',['A','B','C'])"
+        actions:
+          - kind: "set_context"
+            params:
+              key: "main_use"
+              value_from_ui: true
+        target: "choose_avatar_style"
+
+  # -------------------------
+  # 4. Elección de estilo de avatar
+  # -------------------------
+  - id: "choose_avatar_style"
+    type: "ui"
+    on_enter:
+      kind: "ui_choices"
+      params:
+        text: "¿Qué tipo de avatar prefieres?"
+        action: "choose_avatar_style"
+        choices:
+          - value: "1"
+            label: "Calmado y empático"
+          - value: "2"
+            label: "Directo y práctico"
+          - value: "3"
+            label: "Motivador / coach"
+          - value: "4"
+            label: "Divertido y ligero"
+          - value: "5"
+            label: "Informativo y neutral"
+    transitions:
+      - condition: "ui_action_in('choose_avatar_style',['1','2','3','4','5'])"
+        actions:
+          - kind: "set_context"
+            params:
+              key: "preferred_style"
+              value_from_ui: true
+        target: "assign_avatar"
+
+  # -------------------------
+  # 5. Asignación del avatar
+  # -------------------------
+  - id: "assign_avatar"
+    type: "action"
+    on_enter:
+      kind: "call_action"
+      params:
+        name: "assign_default_agent_for_user"
+        input:
+          preferred_style: "{{context.preferred_style}}"
+    transitions:
+      - condition: "action_success"
+        actions:
+          - kind: "set_context"
+            params:
+              key: "selected_agent_id"
+              value_from_action: "agent_id"
+        target: "finish"
+      - condition: "action_failed"
+        target: "assign_avatar_error"
+
+  # -------------------------
+  # 6. Error en asignación
+  # -------------------------
+  - id: "assign_avatar_error"
+    type: "message"
+    on_enter:
+      kind: "static_message"
+      params:
+        text: >
+          Ha ocurrido un problema al configurar tu avatar.
+          Vamos a intentarlo de nuevo.
+    transitions:
+      - condition: "always"
+        target: "choose_avatar_style"
+
+  # -------------------------
+  # 7. Cierre del onboarding
+  # -------------------------
+  - id: "finish"
+    type: "terminal"
+    on_enter:
+      kind: "static_message"
+      params:
+        text: >
+          Listo. Tu avatar principal está configurado.
+          Puedes cambiarlo cuando quieras desde Ajustes.
+    output:
+      next_route:
+        when:
+          - if: "context.main_use == 'A'"
+            value: "/chat/{{context.selected_agent_id}}"
+          - if: "context.main_use == 'B'"
+            value: "/"
+          - if: "context.main_use == 'C'"
+            value: "/"
+      ui_hints:
+        show_chat_cta:
+          when:
+            - if: "context.main_use in ['A','C']"
+              value: true

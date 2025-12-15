@@ -1,0 +1,97 @@
+id: "onboarding_basic"
+name: "Onboarding básico"
+description: >
+  Bienvenida + nombre + objetivo + resumen + cierre.
+  Al finalizar, delega (handoff) a selección de avatar si aplica.
+
+context_schema:
+  user_name:
+    type: "string"
+  user_goal:
+    type: "string"
+  onboarding_handoff:
+    type: "string"
+    allowed: ["none", "avatar_selection"]
+
+states:
+  - id: "start"
+    type: "system"
+    on_enter:
+      kind: "static_message"
+      params:
+        text: >
+          Hola, soy Andhis, tu asistente. Voy a hacerte unas preguntas
+          rápidas para conocerte mejor.
+    transitions:
+      - condition: "always"
+        target: "ask_name"
+
+  - id: "ask_name"
+    type: "prompt"
+    on_enter:
+      kind: "static_message"
+      params:
+        text: "¿Cómo te llamas?"
+    transitions:
+      - condition: "input_not_empty"
+        actions:
+          - kind: "set_context"
+            params:
+              key: "user_name"
+              value_from_input: true
+        target: "ask_goal"
+      - condition: "input_empty"
+        target: "ask_name"
+
+  - id: "ask_goal"
+    type: "prompt"
+    on_enter:
+      kind: "static_message"
+      params:
+        text: "Encantado. ¿Qué te gustaría conseguir hablando conmigo hoy?"
+    transitions:
+      - condition: "input_not_empty"
+        actions:
+          - kind: "set_context"
+            params:
+              key: "user_goal"
+              value_from_input: true
+        target: "summary"
+      - condition: "input_empty"
+        target: "ask_goal"
+
+  - id: "summary"
+    type: "llm"
+    on_enter:
+      kind: "llm_generate"
+      params:
+        instructions: >
+          El usuario ya te ha dado su nombre y lo que quiere conseguir.
+          1) Menciona su nombre una sola vez (usa la forma que haya dado).
+          2) Resume en 2–3 frases el objetivo sin inventar datos.
+          3) Propón EXACTAMENTE 2 o 3 pasos concretos.
+          4) No hagas más preguntas. No abras temas nuevos.
+          5) Si el objetivo es dañino o ilegal, redirige con firmeza y respeto.
+    transitions:
+      - condition: "always"
+        target: "end"
+
+  - id: "end"
+    type: "terminal"
+    on_enter:
+      kind: "static_message"
+      params:
+        text: >
+          Perfecto, ya te conozco un poco mejor. Cuando quieras, seguimos con
+          cualquiera de estos temas.
+    output:
+      # Importante: el workflow termina (tests siguen válidos),
+      # pero el frontend/backend pueden iniciar el siguiente flujo.
+      handoff:
+        kind: "start_workflow"
+        params:
+          workflow_id: "onboarding_avatar_selection"
+          # Decide si siempre lo lanzas o solo si el producto lo requiere.
+          when:
+            - if: "true"
+              value: "avatar_selection"

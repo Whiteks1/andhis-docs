@@ -1,0 +1,11 @@
+style_to_agent_slug:
+  "1": "calm_companion"
+  "2": "direct_helper"
+  "3": "coach_motivator"
+  "4": "light_fun"
+  "5": "info_neutral"
+
+system_agents:
+  guide_neutral:
+    slug: "guide_neutral"
+    purpose: "onboarding_and_navigation"

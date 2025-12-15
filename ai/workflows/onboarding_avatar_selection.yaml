@@ -1,0 +1,91 @@
+id: "onboarding_avatar_selection"
+name: "Onboarding – Selección de avatar"
+description: >
+  Ofrece selección de avatar y configura el avatar principal del usuario.
+  No es chat libre: UI guiada por botones.
+
+context_schema:
+  selected_agent_id:
+    type: "string"
+  selected_agent_label:
+    type: "string"
+
+states:
+  - id: "offer_agent_selection"
+    type: "ui"
+    on_enter:
+      kind: "ui_agent_selector"
+      params:
+        text: "Antes de empezar, elige el avatar con el que quieres conversar:"
+        action: "select_agent"
+        # El backend puede rellenar esta lista desde agents_mvp / DB.
+        # Si todavía no existe, se puede hardcodear temporalmente.
+        agents:
+          - id: "persona.calm.v1"
+            label: "Calmado y empático"
+            preview: "Te escucho. Vamos paso a paso."
+          - id: "persona.direct.v1"
+            label: "Directo y práctico"
+            preview: "Vamos a lo importante y a un plan concreto."
+          - id: "persona.coach.v1"
+            label: "Motivador / coach"
+            preview: "Te acompaño a cumplir objetivos con constancia."
+          - id: "persona.fun.v1"
+            label: "Divertido y ligero"
+            preview: "Hacemos esto más liviano, sin perder foco."
+          - id: "persona.neutral.v1"
+            label: "Informativo / neutral"
+            preview: "Te doy claridad y opciones sin dramatizar."
+    transitions:
+      - condition: "ui_action_equals('select_agent','*')"
+        actions:
+          - kind: "set_context"
+            params:
+              key: "selected_agent_id"
+              value_from_ui: true
+        target: "confirm_agent"
+
+  - id: "confirm_agent"
+    type: "ui"
+    on_enter:
+      kind: "ui_confirm"
+      params:
+        text: "Perfecto. ¿Confirmas este avatar como tu principal?"
+        action: "confirm_selected_agent"
+        choices:
+          - value: "yes"
+            label: "Confirmar"
+          - value: "no"
+            label: "Cambiar"
+    transitions:
+      - condition: "ui_action_equals('confirm_selected_agent','yes')"
+        target: "complete"
+      - condition: "ui_action_equals('confirm_selected_agent','no')"
+        target: "offer_agent_selection"
+
+  - id: "complete"
+    type: "action"
+    on_enter:
+      kind: "call_action"
+      params:
+        name: "set_user_default_agent_and_complete_onboarding"
+        input:
+          selected_agent_id: "{{context.selected_agent_id}}"
+    transitions:
+      - condition: "action_success"
+        target: "done"
+      - condition: "action_failed"
+        target: "offer_agent_selection"
+
+  - id: "done"
+    type: "terminal"
+    on_enter:
+      kind: "static_message"
+      params:
+        text: "Listo. Tu avatar principal está configurado. Puedes cambiarlo cuando quieras en Ajustes."
+    output:
+      next_route:
+        value: "/chat/{{context.selected_agent_id}}"
+      ui_hints:
+        show_chat_cta:
+          value: true

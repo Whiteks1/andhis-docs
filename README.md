@@ -1,93 +1,122 @@
-# Andhis – IA Conversacional (Docs)
 
-Este directorio agrupa toda la documentación relacionada con la capa de IA:
-agentes (avatares), workflows conversacionales, contratos y pruebas.
 
-Objetivo:
-- Mantener un “source of truth” claro.
-- Separar lo estable (base) de lo específico del producto (product).
-- Facilitar implementación, revisión y mantenimiento.
+---
+
+```md
+# Andhis – AI Documentation
+
+Este repositorio contiene la **documentación de diseño conversacional e IA**
+del proyecto **Andhis**.
+
+Aquí se define **qué hace la IA, cómo se comporta y cómo debe integrarse**,
+antes de cualquier implementación técnica.
+
+---
+
+## Alcance del repositorio
+
+Este repositorio cubre exclusivamente:
+
+- Definición de agentes (avatares) de IA
+- Diseño de workflows conversacionales (YAML)
+- Contratos de API relacionados con IA (onboarding, chat)
+- Políticas globales y límites de comportamiento
+- Tests funcionales de workflows
+
+---
+
+## Qué es este repositorio
+
+- Fuente de verdad del **diseño conversacional**
+- Referencia compartida entre **producto, UX y backend**
+- Documentación versionada y revisable
+- Base para implementación determinista de IA
+
+---
+
+## Qué NO es este repositorio
+
+- No contiene código backend
+- No contiene código frontend
+- No define lógica de infraestructura ni runtime
+- No ejecuta workflows
+
+---
+
+## Nota sobre la estructura del repositorio
+
+Este repositorio está dedicado exclusivamente a la documentación de IA de Andhis.
+
+Por ese motivo, la estructura comienza directamente en `ai/`, en lugar de
+`docs/ai/` como ocurre en el repositorio principal de la aplicación.
+
+Conceptualmente, `ai/` en este repositorio equivale a `docs/ai/`
+en el monorepo principal.  
+La documentación y su organización son las mismas; únicamente cambia
+el punto de entrada.
 
 ---
 
 ## Estructura de carpetas
 
-### `base/`
-Documentación “fundacional” y transversal del sistema.
+```
 
-Contiene:
-- `policies.md` → políticas globales de IA (seguridad, límites, temas sensibles).
-- `api_contracts.md` → contratos generales de API/IA (si aplica).
-- `agent_system_default.yaml` → especificación del asistente por defecto (tono, goals, safety).
+ai/
+├─ base/          # Políticas globales de IA (límites, estilo, seguridad)
+├─ product/       # Decisiones de producto y UX relacionadas con IA
+├─ agents/        # Definición de agentes (técnica y documentación humana)
+├─ workflows/     # Workflows conversacionales en YAML
+├─ tests/         # Tests funcionales de workflows
+└─ api/           # Contratos de API relacionados con IA
 
-Uso:
-- Referencia para comportamiento global del sistema y criterios de seguridad.
-
----
-
-### `product/`
-Decisiones específicas del MVP (UX + comportamiento) para Andhis.
-
-Contiene:
-- `README.md` → resumen del MVP y decisiones principales.
-- `agents.yaml` → catálogo de avatares del MVP (seleccionables y sistema).
-- `agents_mapping.yaml` → mapeo estilo (1–5) → slug/avatar.
-- `agents_mvp.md` → explicación humana de cada avatar (tono, límites, promesa).
-- `onboarding_flow.md` → flujo paso a paso del onboarding.
-- `onboarding_contract.md` → contrato Frontend ↔ Backend del onboarding.
-- `workflows.md` → lista/estado de workflows aplicables al producto.
-
-Uso:
-- Guía para implementación del onboarding, selector de avatares y comportamiento esperado.
+```
 
 ---
 
-### `workflows/`
-Workflows conversacionales en formato YAML (fuente para el motor de workflows).
+## Fuentes de verdad (importante)
 
-Contiene:
-- `<workflow_id>.yaml` → definición de estados, transiciones y acciones.
+Cada tipo de información tiene **una única fuente de verdad**:
 
-Convención:
-- El nombre del archivo coincide con `workflow_id`.
-- Ejemplo: `onboarding_guide_ui.yaml`
+- Comportamiento global de la IA → `ai/base/`
+- Agentes (definición técnica) → `ai/agents/agents_registry.yaml`
+- Agentes (producto y UX) → `ai/agents/agents_mvp.md`
+- Mapeo onboarding → `ai/agents/agents_mapping.yaml`
+- Workflows conversacionales → `ai/workflows/`
+- Tests de comportamiento → `ai/tests/`
+- Contratos de API → `ai/api/`
 
----
-
-### `tests/`
-Casos de prueba y criterios de aceptación (manuales o automatizables).
-
-Contiene:
-- `onboarding_basic.md` (ejemplo)
-- futuros: `onboarding_guide_ui.md`, `chat_companion_v1.md`, etc.
+No se deben duplicar decisiones entre archivos.
 
 ---
 
-## Workflows activos (MVP)
+## Estado del proyecto
 
-- `onboarding_guide_ui` → onboarding con avatar guía + selección por botones.
+- Onboarding: **diseñado y documentado**
+- Agentes IA: **definidos a nivel de producto**
+- Motor de workflows: **pendiente de implementación**
+- Chat IA completo: **planned**
 
-Workflows “planned” (aún no implementados):
-- `chat_companion_v1`
-- `chat_info_v1`
-
----
-
-## Convenciones (importante)
-
-- Los ejemplos JSON de request/response van dentro de archivos `.md` (documentación).
-- Los `.yaml` en `workflows/` son definiciones que el motor puede cargar.
-- “Base” define reglas globales; “Product” define la experiencia del MVP.
+La documentación está en **iteración activa**.
 
 ---
 
-## Estado actual
+## Reglas de edición
 
-- Documentación: en progreso y versionada.
-- Implementación: pendiente en backend/frontend según contratos de `product/`.
+- Cambios estructurales deben revisarse antes de implementarse.
+- Cambios de copy o tono pueden iterarse libremente.
+- IDs, slugs y nombres técnicos no se cambian sin coordinación.
+- Todo cambio debe preservar coherencia entre:
+  - workflows
+  - contratos
+  - tests
 
-Diseño conversacional:
-- Whiteks L.P.R
+---
 
-Responsable de implementación:
-- Dev (Go/React)
+## Rol y responsabilidad
+
+- Diseño conversacional y documentación IA: **Whiteks**
+- Implementación técnica: **equipo de desarrollo**
+
+Este repositorio existe para que diseño y backend avancen
+**alineados y sin ambigüedades**.
+
